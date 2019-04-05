@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from 'react-apollo'
+import { BrowserRouter, Route } from 'react-router-dom'
+import './App.css'
+import 'semantic-ui-css/semantic.min.css'
+
+import Home from './views/home'
+import Article from './views/article'
+import Header from './components/header.js'
+import Footer from './components/footer.js'
+
+const client = new ApolloClient({
+  uri: "https://graphql.cosmicjs.com/v1"
+})
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <Header />
+          <div className="router-content">
+            <Route exact path="/" component={Home} />
+            <Route path="/article/:articleName" component={Article} />
+          </div>
+          <Footer />
+        </BrowserRouter>
+      </ApolloProvider>
+    )
   }
 }
 
-export default App;
+export default App
