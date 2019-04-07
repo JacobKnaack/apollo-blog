@@ -1,8 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { Container, Label, Image, Segment } from 'semantic-ui-react'
 import { formatDate, findKeyInArray } from '../../lib/util.js'
+import Logo from '../../images/logo.svg'
+import './_article.css'
 
 const GET_ARTICLE_BY_SLUG = gql`
   query Article($read_key: String!, $slug: String!) {
@@ -23,40 +26,63 @@ const GET_ARTICLE_BY_SLUG = gql`
 const Article = ({ match }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
   const article_slug = match.params.articleName
+
+  // our styling object to be added as 
   const styles = {
     article: {
-      width: '70%',
-      maxWidth: '950px',
+      width: '95%',
+      maxWidth: '900px',
       margin: '20px auto',
+      fontFamily: '"Quicksand", sans-serif',
     },
     heading: {
       height: '100px',
       width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
       backgroundColor: '#4ABDAC',
     },
     headingTitle: {
       color: 'white',
     },
     details: {
-      height: '200px',
       width: '100%',
+      minHeight: '200px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center'
     },
     lineOne: {
+      width: '95%',
+      maxWidth: '900px',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
-      width: '70%',
-      maxWidth: '950px',
     },
     title: {
-      fontSize: '200%',
+      width: '50%',
+      fontSize: '250%',
+      margin: 'auto 20px',
+      lineHeight: '35px',
     },
     date: {
       fontSize: '130%',
+      lineHeight: '20px',
+    },
+    image: {
+      maxWidth: '900px',
+    },
+    btn: {
+      margin: '0 15px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: 'white',
+      cursor: 'pointer',
     }
   }
 
@@ -73,23 +99,25 @@ const Article = ({ match }) => {
         return (
           <Container>
             <div className="post-heading" style={styles.heading}>
-              <h1 style={styles.headingTitle}>Apollo Blog</h1>
+              <Image className="logo small" src={Logo} />
+              <Link to="/" className="header-btn" style={styles.btn}>
+                <i className="inverted large th icon"></i>
+                <p>Article List</p>
+              </Link>
             </div>
             <div className="post-details" style={styles.details}>
               <div style={styles.lineOne}>
                 <h4 className="post-title" style={styles.title}>{data.object.title}</h4>
                 <h6 className="post-date" style={styles.date}>{formatDate(data.object.created_at)}</h6>
               </div>
-              {image ? <Image src={`https://cosmic-s3.imgix.net/${image}`} /> : null}
+              {image ? <Image src={`https://cosmic-s3.imgix.net/${image}`} style={styles.image} /> : null}
               {categories
-                ? <div>
-                  {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)}
-                </div>
+                ? <div> {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)} </div>
                 : null
               }
             </div>
             <Segment
-              className="post-content-container"
+              className="article"
               dangerouslySetInnerHTML={{ __html: data.object.content }}
               raised
               style={styles.article}

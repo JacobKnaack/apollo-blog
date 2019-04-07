@@ -1,0 +1,10 @@
+.article h1 {
+  font-size: 200%;
+  margin: 20px auto;
+}
+
+.article p {
+  line-height: 40px;
+  font-size: 150%;
+  margin: 30px auto;
+}
