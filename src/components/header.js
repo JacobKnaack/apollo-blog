@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Container, Image } from 'semantic-ui-react'
 import MenuIcon from '../images/menuIcon.svg'
 
@@ -39,18 +40,24 @@ class Header extends React.Component {
         color: 'white',
         textAlign: 'center',
         margin: '0 15px',
+        display: 'none',
       },
       icon: {
         width: '40px',
+        display: 'none',
       }
     }
 
     if (this.state.visible) {
       styles.container.top = '0'
+      styles.title.display = 'inherit'
+      styles.icon.display = 'inherit'
     }
     return (
       <Container className='header-container' style={styles.container}>
-        <Image src={MenuIcon} style={styles.icon} />
+        <Link to="/">
+          <Image src={MenuIcon} style={styles.icon} />
+        </Link>
         <h5 style={styles.title}>Apollo Blog</h5>
       </Container>
     )
@@ -58,7 +65,7 @@ class Header extends React.Component {
 
   handleScroll() {
     const scrollTop = window.pageYOffset
-    if (scrollTop > 100) {
+    if (scrollTop > 150) {
       this.setState({ visible: true })
     } else {
       this.setState({ visible: false })

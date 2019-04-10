@@ -2,16 +2,17 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import { Container, Label, Image, Segment } from 'semantic-ui-react'
+import { Container, Loader, Label, Image } from 'semantic-ui-react'
 import { formatDate, findKeyInArray } from '../../lib/util.js'
 import Logo from '../../images/logo.svg'
+import AuthorDisplay from '../../components/authorDisplay'
 import './_article.css'
 
 const GET_ARTICLE_BY_SLUG = gql`
   query Article($read_key: String!, $slug: String!) {
     object(bucket_slug: "apollo-blog", read_key: $read_key, slug: $slug ) {
       _id
-      created_at 
+      created_at
       title
       content
       metafields {
@@ -27,8 +28,13 @@ const Article = ({ match }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
   const article_slug = match.params.articleName
 
-  // our styling object to be added as 
   const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+    },
     article: {
       width: '95%',
       maxWidth: '900px',
@@ -60,11 +66,12 @@ const Article = ({ match }) => {
       maxWidth: '900px',
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     title: {
       width: '50%',
       fontSize: '250%',
+      textAlign: 'right',
       margin: 'auto 20px',
       lineHeight: '35px',
     },
@@ -74,35 +81,26 @@ const Article = ({ match }) => {
     },
     image: {
       maxWidth: '900px',
+      maxHeight: '500px',
     },
-    btn: {
-      margin: '0 15px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      color: 'white',
-      cursor: 'pointer',
-    }
   }
 
 
   return (
     <Query query={GET_ARTICLE_BY_SLUG} variables={{ read_key, slug: article_slug }}>
       {({ loading, error, data }) => {
-        if (loading) return "Loading..."
+        if (loading) return <Loader active inline="centered" size="massive">...loading</Loader>
         if (error) return `Error! ${error.message}`
         const image = findKeyInArray({ key: 'image', array: data.object.metafields })
+        const author = findKeyInArray({ key: 'author', array: data.object.metafields })
         let categories = findKeyInArray({ key: 'categories', array: data.object.metafields })
         if (categories) categories = categories.split(' ')
 
         return (
           <Container>
             <div className="post-heading" style={styles.heading}>
-              <Image className="logo small" src={Logo} />
-              <Link to="/" className="header-btn" style={styles.btn}>
-                <i className="inverted large th icon"></i>
-                <p>Article List</p>
+              <Link to="/" className="header-btn">
+                <Image className="logo small" src={Logo} />
               </Link>
             </div>
             <div className="post-details" style={styles.details}>
@@ -115,11 +113,11 @@ const Article = ({ match }) => {
                 ? <div> {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)} </div>
                 : null
               }
+              <AuthorDisplay display="card" authorId={author} />
             </div>
-            <Segment
+            <div
               className="article"
               dangerouslySetInnerHTML={{ __html: data.object.content }}
-              raised
               style={styles.article}
             />
           </Container>

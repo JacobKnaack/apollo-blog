@@ -4,7 +4,12 @@
 }
 
 .article p {
-  line-height: 40px;
+  line-height: 30px;
   font-size: 150%;
   margin: 30px auto;
+}
+
+.article li {
+  font-size: 130%;
+  line-height: 30px;
 }
