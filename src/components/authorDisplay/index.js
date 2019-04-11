@@ -1,8 +1,7 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { Card, Label, Icon } from 'semantic-ui-react'
+import { Card, Image, Label, Icon } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
-import { findKeyInArray } from '../../lib/util.js'
 
 const GET_AUTHORS = gql`
   query authors($read_key: String!) {
@@ -10,6 +9,7 @@ const GET_AUTHORS = gql`
       _id
       title
       slug
+      metadata
       metafields {
         key
         value
@@ -21,9 +21,12 @@ const GET_AUTHORS = gql`
 const Authors = ({ authorId, displayType }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
   const styles = {
+    container: {
+      display: 'inline-block',
+    },
     labelImage: {
       margin: '0 10px 0 0',
-    }
+    },
   }
 
   return (
@@ -33,25 +36,26 @@ const Authors = ({ authorId, displayType }) => {
         if (error) return `Error! ${error.message}`
 
         return (
-          <div className="author-container">
+          <div className="author-container" style={styles.container}>
             {data.objectsByType.map(author => {
               if (authorId === author._id) {
-                const avatarPath = findKeyInArray({ key: "avatar", array: author.metafields })
-                const bio = findKeyInArray({ key: 'bio', array: author.metafields })
-                const connect = findKeyInArray({ key: 'connect', array: author.metafields })
-                console.log(connect)
+                const { avatar, connect, bio } = author.metadata
 
                 return (
                   <div key={author._id} className="author-info">
                     {displayType === 'default'
                       ? <Label>
-                        {avatarPath
-                          ? <img style={styles.labelImage} src={`https://cosmic-s3.imgix.net/${avatarPath}`} alt={author.slug} />
+                        {avatar
+                          ? <img style={styles.labelImage} src={avatar.url} alt={author.slug} />
                           : <Icon className="user circle" />
                         }
                         {author.title}
                       </Label>
-                      : <Card>
+                      : <Card style={{ width: '200px' }}>
+                        {avatar
+                          ? <Image src={avatar.url} alt={author.slug} />
+                          : <Icon className="user circle" />
+                        }
                         <Card.Content>
                           <Card.Header>
                             {author.title}
@@ -62,11 +66,16 @@ const Authors = ({ authorId, displayType }) => {
                             </Card.Description>
                           </Card.Meta>
                         </Card.Content>
-                        <Card.Content extra>
-                          {Object.keys(connect).map(key => (
-                            <Icon key={key} className={`${key}`} />
-                          ))}
-                        </Card.Content>
+                        {Object.keys(connect).length
+                          ? <Card.Content extra>
+                            {Object.keys(connect).map(key => (
+                              <a key={key} href={connect[key]} target="_blank" rel="noopener noreferrer">
+                                <Icon className={`${key}`} />
+                              </a>
+                            ))}
+                          </Card.Content>
+                          : null
+                        }
                       </Card>
                     }
                   </div>

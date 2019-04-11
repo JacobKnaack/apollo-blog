@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { Container, Loader, Label, Image } from 'semantic-ui-react'
-import { formatDate, findKeyInArray } from '../../lib/util.js'
+import { formatDate } from '../../lib/util.js'
 import Logo from '../../images/logo.svg'
 import AuthorDisplay from '../../components/authorDisplay'
 import './_article.css'
@@ -15,10 +15,7 @@ const GET_ARTICLE_BY_SLUG = gql`
       created_at
       title
       content
-      metafields {
-        key
-        value
-      }
+      metadata
     }
   }
 `
@@ -35,10 +32,16 @@ const Article = ({ match }) => {
       justifyContent: 'center',
       alignItems: 'flex-start',
     },
-    article: {
+    articleContainer: {
       width: '95%',
-      maxWidth: '900px',
+      maxWidth: '950px',
       margin: '20px auto',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    article: {
+      margin: '-20px 0 0 20px',
       fontFamily: '"Quicksand", sans-serif',
     },
     heading: {
@@ -80,7 +83,7 @@ const Article = ({ match }) => {
       lineHeight: '20px',
     },
     image: {
-      maxWidth: '900px',
+      maxWidth: '950px',
       maxHeight: '500px',
     },
   }
@@ -91,9 +94,7 @@ const Article = ({ match }) => {
       {({ loading, error, data }) => {
         if (loading) return <Loader active inline="centered" size="massive">...loading</Loader>
         if (error) return `Error! ${error.message}`
-        const image = findKeyInArray({ key: 'image', array: data.object.metafields })
-        const author = findKeyInArray({ key: 'author', array: data.object.metafields })
-        let categories = findKeyInArray({ key: 'categories', array: data.object.metafields })
+        let { image, author, categories } = data.object.metadata
         if (categories) categories = categories.split(' ')
 
         return (
@@ -108,18 +109,20 @@ const Article = ({ match }) => {
                 <h4 className="post-title" style={styles.title}>{data.object.title}</h4>
                 <h6 className="post-date" style={styles.date}>{formatDate(data.object.created_at)}</h6>
               </div>
-              {image ? <Image src={`https://cosmic-s3.imgix.net/${image}`} style={styles.image} /> : null}
               {categories
                 ? <div> {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)} </div>
                 : null
               }
-              <AuthorDisplay display="card" authorId={author} />
+              {image ? <Image src={image.url} style={styles.image} /> : null}
             </div>
-            <div
-              className="article"
-              dangerouslySetInnerHTML={{ __html: data.object.content }}
-              style={styles.article}
-            />
+            <div style={styles.articleContainer}>
+              <AuthorDisplay display="card" authorId={author._id} />
+              <div
+                className="article"
+                dangerouslySetInnerHTML={{ __html: data.object.content }}
+                style={styles.article}
+              />
+            </div>
           </Container>
         )
       }}

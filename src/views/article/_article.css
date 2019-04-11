@@ -13,3 +13,9 @@
   font-size: 130%;
   line-height: 30px;
 }
+
+.article blockquote {
+  background-color: lightgrey;
+  padding: 0 10px;
+  border-radius: 5px;
+}
