@@ -15,6 +15,23 @@ const client = new ApolloClient({
 })
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+    }
+    this.handleResize = this.handleResize.bind(this)
+  }
+
+  componentWillMount() {
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
+  }
+
   render() {
     return (
       <ApolloProvider client={client}>
@@ -22,12 +39,16 @@ class App extends Component {
           <Header />
           <div className="router-content">
             <Route exact path="/" component={Home} />
-            <Route path="/article/:articleName" component={Article} />
+            <Route path="/article/:articleName" render={(props) => <Article {...props} windowWidth={this.state.windowWidth} />} />
           </div>
           <Footer />
         </BrowserRouter>
       </ApolloProvider>
     )
+  }
+
+  handleResize() {
+    this.setState({ windowWidth: window.innerWidth, windowHeight: window.innerHeight })
   }
 }
 

@@ -18,8 +18,9 @@ const GET_AUTHORS = gql`
   }
 `
 
-const Authors = ({ authorId, displayType }) => {
+const Authors = ({ author, authorId, display }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
+  const isLargeScreen = Boolean(window.innerWidth > 700)
   const styles = {
     container: {
       display: 'inline-block',
@@ -27,6 +28,12 @@ const Authors = ({ authorId, displayType }) => {
     labelImage: {
       margin: '0 10px 0 0',
     },
+    card: {
+      width: '200px',
+    }
+  }
+  if (!isLargeScreen) {
+    styles.card.width = '95%'
   }
 
   return (
@@ -43,7 +50,7 @@ const Authors = ({ authorId, displayType }) => {
 
                 return (
                   <div key={author._id} className="author-info">
-                    {displayType === 'default'
+                    {display !== 'card'
                       ? <Label>
                         {avatar
                           ? <img style={styles.labelImage} src={avatar.url} alt={author.slug} />
@@ -51,12 +58,26 @@ const Authors = ({ authorId, displayType }) => {
                         }
                         {author.title}
                       </Label>
-                      : <Card style={{ width: '200px' }}>
-                        {avatar
-                          ? <Image src={avatar.url} alt={author.slug} />
-                          : <Icon className="user circle" />
+                      : <Card style={styles.card}>
+                        {isLargeScreen
+                          ? <div>
+                            {avatar
+                              ? <Image src={avatar.url} alt={author.slug} />
+                              : <Icon className="user circle" />
+                            }
+                          </div>
+                          : null
                         }
                         <Card.Content>
+                          {!isLargeScreen
+                            ? <div>
+                              {avatar
+                                ? <Image size="mini" floated="left" src={avatar.url} alt={author.slug} />
+                                : <Icon floated="right" className="user circle" />
+                              }
+                            </div>
+                            : null
+                          }
                           <Card.Header>
                             {author.title}
                           </Card.Header>

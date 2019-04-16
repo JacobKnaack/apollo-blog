@@ -5,7 +5,7 @@
 
 .article p {
   line-height: 30px;
-  font-size: 150%;
+  font-size: 130%;
   margin: 30px auto;
 }
 
@@ -15,7 +15,18 @@
 }
 
 .article blockquote {
-  background-color: lightgrey;
   padding: 0 10px;
-  border-radius: 5px;
+  border-left: thin solid #4ABDAC;
+}
+
+.article blockquote p {
+  margin: 2px auto;
+}
+
+.article pre {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+  overflow-x: auto;
 }

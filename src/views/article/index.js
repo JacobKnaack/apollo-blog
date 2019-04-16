@@ -21,7 +21,7 @@ const GET_ARTICLE_BY_SLUG = gql`
 `
 
 
-const Article = ({ match }) => {
+const Article = ({ match, windowWidth }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
   const article_slug = match.params.articleName
 
@@ -34,13 +34,15 @@ const Article = ({ match }) => {
     },
     articleContainer: {
       width: '95%',
-      maxWidth: '950px',
+      maxWidth: '1000px',
       margin: '20px auto',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
+      alignItems: 'flex-start',
     },
     article: {
+      width: '70%',
       margin: '-20px 0 0 20px',
       fontFamily: '"Quicksand", sans-serif',
     },
@@ -87,6 +89,11 @@ const Article = ({ match }) => {
       maxHeight: '500px',
     },
   }
+  if (windowWidth < 700) {
+    styles.articleContainer.flexDirection = 'column'
+    styles.articleContainer.alignItems = 'center'
+    styles.article.width = '95%'
+  }
 
 
   return (
@@ -96,7 +103,6 @@ const Article = ({ match }) => {
         if (error) return `Error! ${error.message}`
         let { image, author, categories } = data.object.metadata
         if (categories) categories = categories.split(' ')
-
         return (
           <Container>
             <div className="post-heading" style={styles.heading}>
@@ -116,7 +122,11 @@ const Article = ({ match }) => {
               {image ? <Image src={image.url} style={styles.image} /> : null}
             </div>
             <div style={styles.articleContainer}>
-              <AuthorDisplay display="card" authorId={author._id} />
+              <AuthorDisplay
+                display="card"
+                author={author}
+                authorId={author._id}
+              />
               <div
                 className="article"
                 dangerouslySetInnerHTML={{ __html: data.object.content }}
