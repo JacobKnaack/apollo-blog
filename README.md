@@ -1,3 +1,14 @@
+<p align="center">
+  <a href="https://apollo-blog.netlify.com">
+    <img alt="Gatsby" src="./src/images/logo.svg" width="60" />
+  </a>
+</p>
+<h1 align="center">
+  Apollo Blog
+</h1>
+<p align="center">A Progressive App for publishing blog content powered by Cosmic JS<p>
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
