@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo'
 import { Link } from 'react-router-dom'
 import { Container, Card, Image, Label, Loader } from 'semantic-ui-react'
 import AuthorDisplay from '../../components/authorDisplay'
-import { formatDate } from '../../lib/util.js'
+import { formatDate, titleCase } from '../../lib/util.js'
 
 const GET_ARTICLES = gql`
   query Articles($read_key: String!) {
@@ -56,7 +56,7 @@ class ArticleList extends React.Component {
               <Card style={styles.card}>
                 <Card.Content>
                   {image ? <Image src={image.url} /> : null}
-                  <Card.Header style={styles.title}>{article.title}</Card.Header>
+                  <Card.Header style={styles.title}>{titleCase(article.title)}</Card.Header>
                   <Card.Meta>
                     {author ? <AuthorDisplay authorId={author._id} /> : null}
                     <span className='date'>{formatDate(article.created_at)}</span>

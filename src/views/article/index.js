@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { Container, Loader, Label, Image } from 'semantic-ui-react'
-import { formatDate } from '../../lib/util.js'
+import { formatDate, titleCase } from '../../lib/util.js'
 import Logo from '../../images/logo.svg'
 import AuthorDisplay from '../../components/authorDisplay'
 import './_article.css'
@@ -113,7 +113,7 @@ const Article = ({ match }) => {
             </div>
             <div className="post-details" style={styles.details}>
               <div style={styles.lineOne}>
-                <h4 className="post-title" style={styles.title}>{data.object.title}</h4>
+                <h4 className="post-title" style={styles.title}>{titleCase(data.object.title)}</h4>
                 <h6 className="post-date" style={styles.date}>{formatDate(data.object.created_at)}</h6>
               </div>
               {categories

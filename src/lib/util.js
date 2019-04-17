@@ -23,7 +23,17 @@ export const formatDate = (date) => {
   return day + ' ' + monthNames[monthIndex] + ' ' + year;
 }
 
+export const titleCase = (str) => {
+  let splitStr = str.toLowerCase().split(' ')
+  for (const i in splitStr) {
+    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+
+  return splitStr.join(' ')
+}
+
 export default {
   findKeyInArray,
   formatDate,
+  titleCase,
 }

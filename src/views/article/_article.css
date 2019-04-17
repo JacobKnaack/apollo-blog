@@ -1,16 +1,45 @@
 .article h1 {
-  font-size: 200%;
-  margin: 20px auto;
+  font-size: 2.5rem;
+  border-bottom: thin solid #d3d3d3;
+}
+
+.article h1, .article h2 {
+  padding-bottom: 5px;
+  margin: 30px auto 10px auto;
+}
+
+.article h2 {
+  font-size: 2.1rem;
+}
+
+.article h3 {
+  font-size: 1.8rem;
+}
+
+.article h4 {
+  font-size: 1.5rem;
+}
+
+.article h5 {
+  font-size: 1.3rem;
+}
+
+.article h6 {
+  font-size: 1.0rem;
 }
 
 .article p {
   line-height: 30px;
-  font-size: 130%;
-  margin: 30px auto;
+  font-size: 1.3rem;
+  margin: 20px auto;
+}
+
+.article strong {
+  font-size: 1.3rem;
 }
 
 .article li {
-  font-size: 130%;
+  font-size: 1.3rem;
   line-height: 30px;
 }
 
@@ -21,6 +50,13 @@
 
 .article blockquote p {
   margin: 2px auto;
+}
+
+.article img {
+  display: block;
+  margin: 0 auto;
+  max-width: 70%;
+  border-radius: 5px;
 }
 
 .article pre {
