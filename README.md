@@ -8,6 +8,8 @@
 </h1>
 <p align="center">A Progressive App for publishing blog content powered by Cosmic JS<p>
 
+[![Powered by Cosmic JS](https://s3-us-west-2.amazonaws.com/cosmicjs/51fe54d0-4f6e-11e9-9f32-8d001da69630-powered-by-cosmicjs.svg)](https://cosmicjs.com/add-bucket?import_bucket=5ca68130b364994aea821419)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2dee5d84-4089-4308-b1b3-5ed654b2f2e4/deploy-status)](https://app.netlify.com/sites/apollo-blog/deploys)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

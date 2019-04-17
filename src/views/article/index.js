@@ -89,6 +89,9 @@ const Article = ({ match }) => {
       maxWidth: '950px',
       maxHeight: '500px',
     },
+    categories: {
+      padding: '10px',
+    }
   }
   if (!isLargeScreen) {
     styles.articleContainer.flexDirection = 'column'
@@ -117,7 +120,7 @@ const Article = ({ match }) => {
                 <h6 className="post-date" style={styles.date}>{formatDate(data.object.created_at)}</h6>
               </div>
               {categories
-                ? <div> {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)} </div>
+                ? <div className="post-categories" style={styles.categories}> {categories.map(category => <Label key={category}>{category.replace(/,/g, '')}</Label>)} </div>
                 : null
               }
               {image ? <Image src={image.url} style={styles.image} /> : null}
