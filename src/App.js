@@ -39,7 +39,7 @@ class App extends Component {
           <Header />
           <div className="router-content">
             <Route exact path="/" component={Home} />
-            <Route path="/article/:articleName" render={(props) => <Article {...props} windowWidth={this.state.windowWidth} />} />
+            <Route path="/article/:articleName" component={Article} />
           </div>
           <Footer />
         </BrowserRouter>

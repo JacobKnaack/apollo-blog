@@ -58,7 +58,7 @@ class ArticleList extends React.Component {
                   {image ? <Image src={image.url} /> : null}
                   <Card.Header style={styles.title}>{article.title}</Card.Header>
                   <Card.Meta>
-                    {author ? <AuthorDisplay author={author} authorId={author._id} /> : null}
+                    {author ? <AuthorDisplay authorId={author._id} /> : null}
                     <span className='date'>{formatDate(article.created_at)}</span>
                   </Card.Meta>
                   <Card.Description style={styles.summary}>{summary}</Card.Description>

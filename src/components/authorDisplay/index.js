@@ -10,10 +10,6 @@ const GET_AUTHORS = gql`
       title
       slug
       metadata
-      metafields {
-        key
-        value
-      }
     }
   }
 `

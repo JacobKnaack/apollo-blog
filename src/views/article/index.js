@@ -21,9 +21,10 @@ const GET_ARTICLE_BY_SLUG = gql`
 `
 
 
-const Article = ({ match, windowWidth }) => {
+const Article = ({ match }) => {
   const read_key = process.env.REACT_APP_COSMIC_JS_READ_KEY
   const article_slug = match.params.articleName
+  const isLargeScreen = Boolean(window.innerWidth > 700)
 
   const styles = {
     container: {
@@ -89,7 +90,7 @@ const Article = ({ match, windowWidth }) => {
       maxHeight: '500px',
     },
   }
-  if (windowWidth < 700) {
+  if (!isLargeScreen) {
     styles.articleContainer.flexDirection = 'column'
     styles.articleContainer.alignItems = 'center'
     styles.article.width = '95%'
@@ -124,7 +125,6 @@ const Article = ({ match, windowWidth }) => {
             <div style={styles.articleContainer}>
               <AuthorDisplay
                 display="card"
-                author={author}
                 authorId={author._id}
               />
               <div
